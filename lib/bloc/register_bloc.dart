@@ -1,6 +1,7 @@
+import 'package:authentication/bloc/validators.dart';
 import 'package:rxdart/subjects.dart';
 
-class RegisterBloc {
+class RegisterBloc with Validators{
   final _registerFullName = BehaviorSubject<String>();
   final _registerEmail = BehaviorSubject<String>();
   final _registerPassword = BehaviorSubject<String>();
@@ -8,10 +9,10 @@ class RegisterBloc {
 
 
   // Getters
-  Stream<String> get registerFullName => _registerFullName.stream;
-  Stream<String> get registerEmail => _registerEmail.stream;
-  Stream<String> get registerPassword => _registerPassword.stream;
-  Stream<String> get registerConfirmPassword => _registerConfirmPassword.stream;
+  Stream<String> get registerFullName => _registerFullName.stream.transform(nameHandler);
+  Stream<String> get registerEmail => _registerEmail.stream.transform(emailHandler);
+  Stream<String> get registerPassword => _registerPassword.stream.transform(loginPasswordHandler);
+  Stream<String> get registerConfirmPassword => _registerConfirmPassword.stream.transform(loginPasswordHandler);
 
   // Setters
 
