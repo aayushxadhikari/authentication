@@ -23,7 +23,7 @@ mixin Validators {
   });
 
   // Login Password Validators
-  var loginPasswordHandler =
+  var passwordHandler =
       StreamTransformer<String, String>.fromHandlers(handleData: (password, sink) {
     if (password.isEmpty) {
       return sink.addError("This field can't be empty");

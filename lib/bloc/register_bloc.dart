@@ -11,8 +11,8 @@ class RegisterBloc with Validators{
   // Getters
   Stream<String> get registerFullName => _registerFullName.stream.transform(nameHandler);
   Stream<String> get registerEmail => _registerEmail.stream.transform(emailHandler);
-  Stream<String> get registerPassword => _registerPassword.stream.transform(loginPasswordHandler);
-  Stream<String> get registerConfirmPassword => _registerConfirmPassword.stream.transform(loginPasswordHandler);
+  Stream<String> get registerPassword => _registerPassword.stream.transform(passwordHandler);
+  Stream<String> get registerConfirmPassword => _registerConfirmPassword.stream.transform(passwordHandler);
 
   // Setters
 

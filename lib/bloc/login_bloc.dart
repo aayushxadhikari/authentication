@@ -9,7 +9,7 @@ class LoginBloc with Validators{
 
   // Getters
   Stream<String> get loginEmail => _loginEmail.stream.transform(emailHandler);
-  Stream<String> get loginPassword => _loginPassword.stream.transform(loginPasswordHandler);
+  Stream<String> get loginPassword => _loginPassword.stream.transform(passwordHandler);
 
   // Setters
   Function(String) get changeLoginEmail => _loginEmail.sink.add;
