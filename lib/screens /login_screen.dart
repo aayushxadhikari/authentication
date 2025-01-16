@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:authentication/bloc/login_bloc.dart';
 import 'package:authentication/screens%20/register_screen.dart';
 import 'package:flutter/gestures.dart';
@@ -42,44 +40,45 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 height: 30,
               ),
-              StreamBuilder<String>(
+              StreamBuilder<Object>(
                 stream: bloc.loginEmail,
                 builder: (context, snapshot) => TextFormField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      hintText: 'Enter Your Email',
-                      labelText: "Email",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.person, color: Colors.indigo),
-                      filled: true,
-                      fillColor: Colors.grey[200],
+                  controller: _emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    hintText: 'Enter Your Email',
+                    labelText: "Email",
+                    
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    onChanged: (value) => bloc.changeLoginEmail,
+                    prefixIcon: Icon(Icons.person, color: Colors.indigo),
+                    filled: true,
+                    fillColor: Colors.grey[200],
                   ),
+                  onChanged: (value) => bloc.changeLoginEmail,
+                ),
               ),
               SizedBox(
                 height: 30,
               ),
-              StreamBuilder<String>(
+              StreamBuilder<Object>(
                 stream: bloc.loginPassword,
                 builder: (context, snapshot) => TextField(
-                    controller: _passwordController,
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Enter Your Password',
-                      labelText: "Password",
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      prefixIcon: Icon(Icons.lock, color: Colors.indigo),
-                      filled: true,
-                      fillColor: Colors.grey[200],
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    hintText: 'Enter Your Password',
+                    labelText: "Password",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
                     ),
-                    onChanged: (value) => bloc.changeLoginPassword,
+                    prefixIcon: Icon(Icons.lock, color: Colors.indigo),
+                    filled: true,
+                    fillColor: Colors.grey[200],
                   ),
+                  onChanged: (value) => bloc.changeLoginPassword,
+                ),
               ),
               SizedBox(
                 height: 30,
@@ -115,30 +114,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_formKey.currentState?.validate() ?? false) {
-          // TODO: Add functionality for successful form validation
-          print("Email: ${_emailController.text}");
-          print("Password: ${_passwordController.text}");
-        } else {
-          print("Form validation failed");
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.indigo,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 140, vertical: 15),
-      ),
-      child: Text(
-        'Login',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-        ),
-      ),
+    final bloc = Provider.of<LoginBloc>(context, listen: false);
+    return StreamBuilder<Object>(
+      stream: bloc.isValid,
+      builder: (context, snapshot) {
+        return ElevatedButton(
+          onPressed: () {},
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.indigo,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 140, vertical: 15),
+          ),
+          child: Text(
+            'Login',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+        );
+      }
     );
   }
 }

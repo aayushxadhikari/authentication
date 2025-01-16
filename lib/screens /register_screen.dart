@@ -16,19 +16,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isVisible = false;
+
   @override
   Widget build(BuildContext context) {
     final bloc = Provider.of<RegisterBloc>(context, listen: false);
     return Scaffold(
-      backgroundColor: Color(0xFFFFE5B4),
+      backgroundColor: const Color(0xFFFFE5B4),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 "Register",
                 style: TextStyle(
                   fontStyle: FontStyle.italic,
@@ -37,143 +38,145 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               StreamBuilder<String>(
                 stream: bloc.registerFullName,
-                builder: (context, snapshot) => TextField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Enter Your Full Name',
-                    labelText: "Full Name",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                builder: (context, snapshot) {
+                  return TextField(
+                    keyboardType: TextInputType.name,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Your Full Name',
+                      labelText: "Full Name",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      prefixIcon:
+                          const Icon(Icons.person_outlined, color: Colors.indigo),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      errorText: snapshot.error?.toString(),
                     ),
-                    prefixIcon:
-                        Icon(Icons.person_outlined, color: Colors.indigo),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                  ),
-                  onChanged: (value) => bloc.changeFullName,
-                ),
+                    onChanged: (value) => bloc.changeFullName(value),
+                  );
+                },
               ),
-              SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               StreamBuilder<String>(
                 stream: bloc.registerEmail,
-                builder: (context, snapshot) => TextField(
-                  controller: _emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                    hintText: 'Enter Your Email',
-                    labelText: "Email",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    prefixIcon: Icon(Icons.person, color: Colors.indigo),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                  ),
-                  onChanged: (value) => bloc.changeRegisterEmail,
-                ),
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              StreamBuilder<String>(
-                  stream: bloc.registerPassword,
-                  builder: (context, snapshot) {
-                    return TextField(
-                      controller: _passwordController,
-                      obscureText: isVisible ? false : true,
-                      decoration: InputDecoration(
-                        hintText: 'Enter Your Password',
-                        labelText: "Password",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        prefixIcon: Icon(Icons.lock, color: Colors.indigo),
-                        suffix: IconButton(
-                          icon: isVisible
-                          ? Icon(Icons.visibility)
-                          : Icon(Icons.visibility_off),
-                          onPressed: () {
-                            setState(() {
-                              isVisible = !isVisible;
-                            });
-                          },
-                          padding: EdgeInsets.all(0),
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[200],
-                        contentPadding: EdgeInsets.symmetric(vertical: 5),
+                builder: (context, snapshot) {
+                  return TextField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Your Email',
+                      labelText: "Email",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      textAlignVertical: TextAlignVertical.top,
-                      onChanged: (value) => bloc.changeRegisterPassword,
-                    );
-                  }),
-              SizedBox(
-                height: 30,
+                      prefixIcon: const Icon(Icons.person, color: Colors.indigo),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      errorText: snapshot.error?.toString(),
+                    ),
+                    onChanged: (value) => bloc.changeRegisterEmail(value),
+                  );
+                },
               ),
+              const SizedBox(height: 30),
+              StreamBuilder<String>(
+                stream: bloc.registerPassword,
+                builder: (context, snapshot) {
+                  return TextField(
+                    controller: _passwordController,
+                    obscureText: !isVisible,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Your Password',
+                      labelText: "Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.indigo),
+                      suffix: IconButton(
+                        icon: Icon(
+                          isVisible ? Icons.visibility : Icons.visibility_off,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            isVisible = !isVisible;
+                          });
+                        },
+                        padding: EdgeInsets.zero,
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                      errorText: snapshot.error?.toString(),
+                    ),
+                    textAlignVertical: TextAlignVertical.top,
+                    onChanged: (value) => bloc.changeRegisterPassword(value),
+                  );
+                },
+              ),
+              const SizedBox(height: 30),
               StreamBuilder<String>(
                 stream: bloc.registerConfirmPassword,
-                builder: (context, snapshot) => TextField(
-                  obscureText: isVisible ? false : true,
-                  decoration: InputDecoration(
-                    hintText: 'Confirm Password',
-                    labelText: "Confirm Password",
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                builder: (context, snapshot) {
+                  return TextField(
+                    obscureText: !isVisible,
+                    decoration: InputDecoration(
+                      hintText: 'Confirm Password',
+                      labelText: "Confirm Password",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      prefixIcon: const Icon(Icons.lock, color: Colors.indigo),
+                      suffix: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            isVisible = !isVisible;
+                          });
+                        },
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
+                        icon: Icon(
+                          isVisible ? Icons.visibility : Icons.visibility_off,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey[200],
+                      contentPadding: const EdgeInsets.symmetric(vertical: 5),
+                      errorText: snapshot.error?.toString(),
                     ),
-                    prefixIcon: Icon(Icons.lock, color: Colors.indigo),
-                    suffix: IconButton(
-                      
-                      onPressed: () {
-                        setState(() {
-                          isVisible = !isVisible;
-                        });
-                      },
-                      padding: EdgeInsets.zero,
-                      constraints: BoxConstraints(),
-                      icon: isVisible
-                          ? Icon(Icons.visibility)
-                          : Icon(Icons.visibility_off),
-                    ),
-                    filled: true,
-                    fillColor: Colors.grey[200],
-                    contentPadding: EdgeInsets.symmetric(vertical: 5),
-                  ),
-                  textAlignVertical: TextAlignVertical.top,
-                  onChanged: (value) => bloc.changeConfirmPassword,
-                ),
+                    textAlignVertical: TextAlignVertical.top,
+                    onChanged: (value) => bloc.changeConfirmPassword(value),
+                  );
+                },
               ),
-              SizedBox(
-                height: 30,
-              ),
-              _buildButton(),
-              SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 30),
+              _buildButton(bloc),
+              const SizedBox(height: 10),
               RichText(
                 text: TextSpan(
-                    style: TextStyle(
-                      color: Colors.indigo,
+                  style: const TextStyle(
+                    color: Colors.indigo,
+                  ),
+                  children: [
+                    const TextSpan(
+                      text: "Already have an Account? ",
                     ),
-                    children: [
-                      TextSpan(
-                        text: "Already have an Account? ",
-                      ),
-                      TextSpan(
-                        text: "Login",
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => LoginScreen()));
-                          },
-                      ),
-                    ]),
+                    TextSpan(
+                      text: "Login",
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -182,32 +185,38 @@ class _RegisterScreenState extends State<RegisterScreen> {
     );
   }
 
-  Widget _buildButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_formKey.currentState?.validate() ?? false) {
-          // TODO: Add functionality for successful form validation
-          print("Email: ${_emailController.text}");
-          print("Password: ${_passwordController.text}");
-        } else {
-          print("Form validation failed");
-        }
+  Widget _buildButton(RegisterBloc bloc) {
+    return StreamBuilder<bool>(
+      stream: bloc.isFormValid,
+      builder: (context, snapshot) {
+        return ElevatedButton(
+          onPressed: snapshot.data == true
+              ? () {
+                  if (_formKey.currentState!.validate()) {
+                    bloc.register(
+                      _emailController.text,
+                      _passwordController.text,
+                    );
+                  }
+                }
+              : null,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.indigo,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 130, vertical: 15),
+            minimumSize: const Size(200, 50),
+          ),
+          child: const Text(
+            'Register',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+            ),
+          ),
+        );
       },
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.indigo,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 130, vertical: 15),
-        minimumSize: Size(200, 50),
-      ),
-      child: Text(
-        'Register',
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: 18,
-        ),
-      ),
     );
   }
 }
